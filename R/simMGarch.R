@@ -1,7 +1,7 @@
 #' An S4 class for a nonstationary CCC model.
 #' @name simMGarch-class
 #' @rdname simMGarch-class
-#' @description A class to create an object of a simulated piecewise constant conditional correlation (CCC) model 
+#' @description A specification class to create an object of a simulated piecewise constant conditional correlation (CCC) model 
 #' denoted by \eqn{r_t = (r_{1, t}, \ldots, r_{n, t})^T}, \eqn{t=1, \ldots, n} with 
 #' \eqn{r_{i, t}= \sqrt{h_{i, t}}\epsilon_{i, t}} where \eqn{h_{i, t}= \omega_i(t) + \sum_{j=1}^p \alpha_{i, j}(t)r_{i, t-j}^2 + \sum_{k=1}^q \beta_{i, k}(t)h_{i, t-k}}.
 #' In this package, we assume a piecewise constant CCC with \eqn{p=q=1}.

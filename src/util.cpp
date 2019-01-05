@@ -109,7 +109,7 @@ List func_dc(NumericMatrix z, double gamma){
   NumericVector iminus(n);
   double factor;
   
-  factor = std::sqrt(len-1)/std::sqrt(len);
+  factor = std::sqrt((double) (len-1))/std::sqrt((double) len);
   iplus = z(_, 0);
   for(j=0; j<n; j++){
     iminus(j) = sum(z(j, _))-z(j, 0);
@@ -118,7 +118,7 @@ List func_dc(NumericMatrix z, double gamma){
   }
   if(len-2>0){
     for(i=1; i<len-1; i++){
-      factor = std::sqrt(i+1)*std::sqrt(len-i-1)/std::sqrt(len);
+      factor = std::sqrt((double) (i+1))*std::sqrt((double) (len-i-1))/std::sqrt((double) len);
       for(j=0; j<n; j++){
         iplus(j) = iplus(j)+z(j, i);
         iminus(j) = iminus(j)-z(j, i);
@@ -164,7 +164,7 @@ List func_cusum(NumericMatrix z){
   NumericVector iminus(n);
   double factor;
   
-  factor = std::sqrt(len-1)/std::sqrt(len);
+  factor = std::sqrt((double) (len-1))/std::sqrt((double) len);
   iplus = z(_, 0);
   for(j=0; j<n; j++){
     iminus(j) = sum(z(j, _))-z(j, 0);
@@ -173,7 +173,7 @@ List func_cusum(NumericMatrix z){
   }
   if(len-2>0){
     for(i=1; i<len-1; i++){
-      factor = std::sqrt(i+1)*std::sqrt(len-i-1)/std::sqrt(len);
+      factor = std::sqrt((double) (i+1))*std::sqrt((double) (len-i-1))/std::sqrt((double) len);
       for(j=0; j<n; j++){
         iplus(j) = iplus(j)+z(j, i);
         iminus(j) = iminus(j)-z(j, i);
@@ -197,14 +197,14 @@ List func_cusum_vec(NumericVector z){
   NumericVector acs(len-1);
   double iplus, iminus, factor;
   
-  factor = std::sqrt(len-1)/std::sqrt(len);
+  factor = std::sqrt((double) (len-1))/std::sqrt((double) len);
   iplus = z(0);
   iminus = sum(z)-z(0);
   cs(0) = factor*(iplus-iminus/(len-1));
   acs(0) = fabs(cs(0));
   if(len-2>0){
     for(i=1; i<len-1; i++){
-      factor = std::sqrt(i+1)*std::sqrt(len-i-1)/std::sqrt(len);
+      factor = std::sqrt((double) (i+1))*std::sqrt((double) (len-i-1))/std::sqrt((double) len);
       iplus = iplus + z(i);
       iminus = iminus - z(i);
       cs(i) = factor*(iplus/(i+1) - iminus/(len-i-1));
@@ -327,6 +327,7 @@ List func_density(NumericMatrix z, double c){
   int len = z.ncol();
   int nt = 2*n;
   int i, j;
+  double CONST = 2;
   NumericMatrix cs(n, len-1);
   NumericMatrix acs(n, len-1);
   NumericMatrix res(len-1, 6);
@@ -347,7 +348,7 @@ List func_density(NumericMatrix z, double c){
   NumericVector iminus(n);
   double factor;
   
-  factor = sqrt(len-1)/sqrt(len);
+  factor = std::sqrt((double) (len-1))/std::sqrt((double) len);
   iplus = z(_, 0);
   for(j=0; j<n; j++){
     iminus(j) = sum(z(j, _))-z(j, 0);
@@ -356,7 +357,7 @@ List func_density(NumericMatrix z, double c){
   }
   if(len-2>0){ 
     for(i=1; i<len-1; i++){
-      factor = sqrt(i+1)*sqrt(len-i-1)/sqrt(len);
+      factor = std::sqrt((double) (i+1))*sqrt((double) (len-i-1))/sqrt((double) len);
       for(j=0; j<n; j++){
         iplus(j) = iplus(j)+z(j, i);
         iminus(j) = iminus(j)-z(j, i);
@@ -377,7 +378,7 @@ List func_density(NumericMatrix z, double c){
     ref = stl_sort(acs(_, i));
     ref = rcpp_rev(ref);
     
-    factor = sqrt(nt-1)/sqrt(nt);
+    factor = std::sqrt((double) (nt-1))/std::sqrt((double) nt);
     iplus(0) = ref(0);
     iminus(0) = sum(ref)-ref(0);
     col1(0) = iplus(0)-iminus(0)/(nt-1);
@@ -385,17 +386,17 @@ List func_density(NumericMatrix z, double c){
     col3(0) = factor*col2(0);
     col4(0) = c*col1(0)+col2(0);
     col(0) = pow(ref(0), 2)-1;
-    col(0) /= sqrt(2*1);
+    col(0) /= std::sqrt(CONST);
     for(j=1; j<n; j++){
-      factor = sqrt(j+1)*sqrt(nt-j-1)/sqrt(nt);
+      factor = std::sqrt((double) (j+1))*sqrt((double) (nt-j-1))/sqrt((double) nt);
       iplus(j) = iplus(j-1)+ref(j);
       iminus(j) = iminus(j-1)-ref(j);
       col1(j) = iplus(j)/(j+1)-iminus(j)/(nt-j-1);
       col2(j) = factor*col1(j);
       col3(j) = factor*col2(j);
       col4(j) = c*col1(j)+col2(j);
-      col(j) = col(j-1)*sqrt(2*(j-1))+pow(ref(j), 2)-1;
-      col(j) /= sqrt(2*j);
+      col(j) = col(j-1)*sqrt((double) (2*(j-1)))+pow(ref(j), 2)-1;
+      col(j) /= std::sqrt((double) (2*j));
     }
     mat1(_, i) = col1; mat2(_, i) = col2; mat3(_, i) = col3; mat4(_, i) = col4; mat5(_, i) = col;
     res(i, 0) = max(col1); res(i, 1) = max(col2); res(i, 2) = max(col3); res(i, 3) = max(col4);
@@ -416,6 +417,7 @@ List func_density_by(NumericMatrix z, double dmby, double dtby, double c){
   int i, j, k;
   int mby = dmby;
   int tby = dtby;
+  double CONST = 2;
   
   NumericMatrix cs(n, len-1);
   NumericMatrix acs(n, len-1);
@@ -438,7 +440,7 @@ List func_density_by(NumericMatrix z, double dmby, double dtby, double c){
   
   double factor, plus, minus, plussq;
   
-  factor = sqrt(len-1)/sqrt(len);
+  factor = std::sqrt((double) (len-1))/std::sqrt((double) len);
   iplus = z(_, 0);
   for(j=0; j<n; j++){
     iminus(j) = sum(z(j, _))-z(j, 0);
@@ -447,7 +449,7 @@ List func_density_by(NumericMatrix z, double dmby, double dtby, double c){
   }
   if(len-2>0){ 
     for(i=1; i<len-1; i++){
-      factor = sqrt(i+1)*sqrt(len-i-1)/sqrt(len);
+      factor = std::sqrt((double) (i+1))*sqrt((double) (len-i-1))/sqrt((double) len);
       for(j=0; j<n; j++){
         iplus(j) = iplus(j)+z(j, i);
         iminus(j) = iminus(j)-z(j, i);
@@ -467,7 +469,7 @@ List func_density_by(NumericMatrix z, double dmby, double dtby, double c){
     ref = stl_sort(acs(_, i*tby));
     ref = rcpp_rev(ref);
     
-    factor = sqrt(nt-1)/sqrt(nt);
+    factor = std::sqrt((double) (nt-1))/std::sqrt((double) nt);
     plus = ref(0);
     minus = sum(ref)-ref(0);
     plussq = pow(ref(0), 2);
@@ -476,14 +478,14 @@ List func_density_by(NumericMatrix z, double dmby, double dtby, double c){
     col3(0) = factor*col2(0);
     col4(0) = c*col1(0)+col2(0);
     col(0) = plussq-1; 
-    col(0) /= sqrt(2*1);
+    col(0) /= std::sqrt(CONST);
     for(k=1; k<mby; k++){
       col1(k) = col1(0); col2(k) = col2(0); col3(k) = col3(0); col4(k) = col4(0); col(k) = col(0);
       plus += ref(k); minus -= ref(k);
       plussq += pow(ref(k), 2);
     }
     for(j=1; j<nb; j++){
-      factor = sqrt(j*mby+1)*sqrt(nt-j*mby-1)/sqrt(nt);
+      factor = std::sqrt((double) (j*mby+1))*std::sqrt((double) (nt-j*mby-1))/std::sqrt((double) nt);
       plus += ref(j*mby);
       minus -= ref(j*mby);
       plussq += pow(ref(j*mby), 2);
@@ -491,8 +493,8 @@ List func_density_by(NumericMatrix z, double dmby, double dtby, double c){
       col2(j*mby) = factor*col1(j*mby);
       col3(j*mby) = factor*col2(j*mby);
       col4(j*mby) = c*col1(j*mby)+col2(j*mby);
-      col(j*mby) = col((j-1)*mby)*sqrt(2*(j-1)*mby)+plussq-mby; 
-      col(j*mby) /= sqrt(2*j*mby);
+      col(j*mby) = col((j-1)*mby)*std::sqrt((double) (2*(j-1)*mby))+plussq-mby; 
+      col(j*mby) /= std::sqrt((double) (2*j*mby));
       for(k=1; k<mby; k++){
         if(j*mby+k < n){
           col1(j*mby+k) = col1(j*mby); col2(j*mby+k) = col2(j*mby); col3(j*mby+k) = col3(j*mby); col4(j*mby+k) = col4(j*mby); col(j*mby+k) = col(j*mby);

@@ -6,16 +6,24 @@
 \alias{garch.seg}
 \alias{garch.seg-methods}
 \alias{garch.seg,ANY-method}
+\alias{garch.seg,tvMGarch-method}
 \title{An S4 method to detect the change-points in a high-dimensional GARCH process.}
 \usage{
-garch.seg(x, p = 1, q = 1, f = 8, sig.level = 0.05, Bsim = 200,
-  off.diag = TRUE, dw = NULL, do.pp = TRUE, do.parallel = TRUE)
-
-\S4method{garch.seg}{ANY}(x, p = 1, q = 1, f = 8, sig.level = 0.05,
+garch.seg(object, x, p = 1, q = 1, f = 8, sig.level = 0.05,
   Bsim = 200, off.diag = TRUE, dw = NULL, do.pp = TRUE,
-  do.parallel = TRUE)
+  do.parallel = 4)
+
+\S4method{garch.seg}{ANY}(object = NULL, x, p = 1, q = 1, f = 8,
+  sig.level = 0.05, Bsim = 200, off.diag = TRUE, dw = NULL,
+  do.pp = TRUE, do.parallel = 4)
+
+\S4method{garch.seg}{tvMGarch}(object, p = 1, q = 1, f = 8,
+  sig.level = 0.05, Bsim = 200, off.diag = TRUE, dw = NULL,
+  do.pp = TRUE, do.parallel = 4)
 }
 \arguments{
+\item{object}{A \code{tvMGarch} object.Not necessary if \code{x} is used.}
+
 \item{x}{Input data matrix, with each row representing the component time series.}
 
 \item{p}{Choose the ARCH order. Default is 1.}
@@ -37,7 +45,7 @@ garch.seg(x, p = 1, q = 1, f = 8, sig.level = 0.05, Bsim = 200,
 \item{do.parallel}{Number of copies of R running in parallel, if \code{do.parallel = 0}, \%do\% operator is used, see also \link{foreach}.}
 }
 \description{
-An S4 method to detect the change-points in a high-dimensional GARCH process using the DCBS methodology described in Cho and Korkas (2018).
+An S4 method to detect the change-points in a high-dimensional GARCH process using the DCBS methodology described in Cho and Korkas (2018). If a \code{tvMGarch} is specified then it returns a \code{tvMGarch} object is returned. Otherwise a list of features is returned.
 }
 \examples{
 #pw.CCC.obj <- new("simMGarch")
@@ -45,8 +53,7 @@ An S4 method to detect the change-points in a high-dimensional GARCH process usi
 #pw.CCC.obj@n=1000
 #pw.CCC.obj@changepoints=c(250,750)
 #pw.CCC.obj <- pc_cccsim(pw.CCC.obj)
-#dcs.obj=garch.seg(pw.CCC.obj@y)
-#dcs.obj$est.cps
+#dcs.obj=garch.seg(x=empirObj@y,do.parallel = 4)
 }
 \references{
 Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2018).

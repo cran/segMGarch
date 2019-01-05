@@ -1,8 +1,12 @@
 
-func.null.stat <- function(mat, op=2, res, T, c.mat, prob, burnin=100, p, q, Bsim=200, boot.op=2, f, eps, off.diag=TRUE, sgn, mby, tby, gam){
+func.null.stat <- function(mat, op=2, res, T, c.mat, prob, burnin=100, p, q, Bsim=200, boot.op=2, f, eps, off.diag=TRUE, sgn, mby, tby, gam,do.parallel=0){
+  if(do.parallel > 0){
+    cl <- parallel::makeCluster(do.parallel); doParallel::registerDoParallel(cl)
+  }
+  `%parDo%` <- ifelse(do.parallel > 0, `%dopar%`, `%do%`)
   n <- dim(res)[1]; len <- dim(res)[2]
   if(boot.op==2) C <- cor.shrink(t(res), verbose=FALSE)
-  null.stat <- foreach(l=iter(1:Bsim), .combine=cbind, .packages=c("Rcpp", "RcppArmadillo", "segMGarch")) %dopar% {
+  null.stat <- foreach(l=iter(1:Bsim), .combine=cbind, .packages=c("Rcpp", "RcppArmadillo", "segMGarch")) %parDo% {
     #if(boot.op==2) nz <- t(mvrnorm_arma(T+burnin, C))
     if(boot.op==1){
       ind <- c()
@@ -46,5 +50,6 @@ func.null.stat <- function(mat, op=2, res, T, c.mat, prob, burnin=100, p, q, Bsi
     rm(nz, nh, nx, ntx, nttx)
     tmp
   }
+  if(do.parallel > 0) parallel::stopCluster(cl)
   null.stat
 }
