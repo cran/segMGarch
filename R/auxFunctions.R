@@ -4,7 +4,15 @@ func.input <- function(x, formula, p, q, f=NULL, eps=1e-5, off.diag=TRUE){
   c.mat <- c()
   for(i in 1:n){
     gf <- garchFit(formula = formula, data = x[i, ], trace=FALSE, include.mean=FALSE)
-    c <- coef(gf); c.mat <- rbind(c.mat, c)
+    c <- coef(gf)
+    #Sanity check to examine if a+b<1. If not then run a simple GARCH(0,1) model which is a EWMA equivalent.
+    if (sum(c[-1]) >= 1)  {
+      print(paste("Component series",i,"returns a+b > 1: Re-estimating assuming GARCH(0,1)"))
+      c <- c*0
+      gf <- garchFit(formula = ~garch(1, 0), data = x[i, ], trace=FALSE, include.mean=FALSE)
+      c[1:2] <- coef(gf)
+    }
+    c.mat <- rbind(c.mat, c)
     h[i, ] <- gf@h.t
     res[i, ] <- x[i, -(1:r)]/sqrt(h[i, -(1:r)])
   }
@@ -18,7 +26,6 @@ func.input <- function(x, formula, p, q, f=NULL, eps=1e-5, off.diag=TRUE){
   tx <- x[, -(1:r)]/sqrt(denom)
   ttx <- t(apply(tx^2, 1, function(z){z/mean(z)}))
   if(off.diag){ sgn <- sign(tx%*%t(tx)); ttx <- rbind(ttx, t(func_input_off(tx, sgn, 0, 0)$input)) } else sgn <- c()
-  
   list(denom=denom, tx=tx, ttx=ttx, h=h, res=res, c.mat=c.mat, sgn=sgn, f=f)
 }
 

@@ -9,28 +9,28 @@
 \alias{garch.seg,tvMGarch-method}
 \title{An S4 method to detect the change-points in a high-dimensional GARCH process.}
 \usage{
-garch.seg(object, x, p = 1, q = 1, f = 8, sig.level = 0.05,
+garch.seg(object, x, p = 1, q = 0, f = NULL, sig.level = 0.05,
   Bsim = 200, off.diag = TRUE, dw = NULL, do.pp = TRUE,
   do.parallel = 4)
 
-\S4method{garch.seg}{ANY}(object = NULL, x, p = 1, q = 1, f = 8,
+\S4method{garch.seg}{ANY}(object = NULL, x, p = 1, q = 0, f = NULL,
   sig.level = 0.05, Bsim = 200, off.diag = TRUE, dw = NULL,
   do.pp = TRUE, do.parallel = 4)
 
-\S4method{garch.seg}{tvMGarch}(object, p = 1, q = 1, f = 8,
+\S4method{garch.seg}{tvMGarch}(object, p = 1, q = 0, f = NULL,
   sig.level = 0.05, Bsim = 200, off.diag = TRUE, dw = NULL,
   do.pp = TRUE, do.parallel = 4)
 }
 \arguments{
-\item{object}{A \code{tvMGarch} object.Not necessary if \code{x} is used.}
+\item{object}{A \code{tvMGarch} object. Not necessary if \code{x} is used.}
 
 \item{x}{Input data matrix, with each row representing the component time series.}
 
 \item{p}{Choose the ARCH order. Default is 1.}
 
-\item{q}{Choose the GARCH order. Default is 1.}
+\item{q}{Choose the GARCH order. Default is 0.}
 
-\item{f}{The dampening factor. Default is 8.}
+\item{f}{The dampening factor. If NULL then \code{f} is selected automatically. Default is NULL.}
 
 \item{sig.level}{Indicates the quantile of bootstrap test statistics to be used for threshold selection. Default is 0.05.}
 

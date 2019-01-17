@@ -4,15 +4,15 @@
 #' @description An S4 method to detect the change-points in a high-dimensional GARCH process using the DCBS methodology described in Cho and Korkas (2018). If a \code{tvMGarch} is specified then it returns a \code{tvMGarch} object is returned. Otherwise a list of features is returned.
 #' @param x Input data matrix, with each row representing the component time series.
 #' @param p Choose the ARCH order. Default is 1.
-#' @param q Choose the GARCH order. Default is 1.
-#' @param f The dampening factor. Default is 8.
+#' @param q Choose the GARCH order. Default is 0.
+#' @param f The dampening factor. If NULL then \code{f} is selected automatically. Default is NULL.
 #' @param off.diag If \code{TRUE} allows to look at the cross-sectional correlation structure.
 #' @param dw The length of boundaries to be trimmed off.
 #' @param do.pp Allows further post processing of the estimated change-points to reduce the risk of undersegmentation.
 #' @param Bsim Number of bootstrap samples for threshold selection. Default is 200.
 #' @param sig.level Indicates the quantile of bootstrap test statistics to be used for threshold selection. Default is 0.05.
 #' @param do.parallel Number of copies of R running in parallel, if \code{do.parallel = 0}, \%do\% operator is used, see also \link{foreach}.
-#' @param object A \code{tvMGarch} object.Not necessary if \code{x} is used.
+#' @param object A \code{tvMGarch} object. Not necessary if \code{x} is used.
 #' @references
 #' Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2018).
 #' @examples
@@ -28,14 +28,14 @@
 #' @export
 #' @aliases garch.seg garch.seg-class garch.seg-methods
 setGeneric(name="garch.seg",
-           def=function(object,x, p=1, q=1, f=8, sig.level=0.05, 
+           def=function(object,x, p=1, q=0, f=NULL, sig.level=0.05, 
                         Bsim=200, off.diag=TRUE, dw=NULL, do.pp=TRUE,do.parallel=4)
            {
              standardGeneric("garch.seg")
            }
 )
 #' @rdname garch.seg-class
-setMethod(f="garch.seg",signature = c("ANY"), definition = function(object=NULL,x, p=1, q=1, f=8, sig.level=0.05, 
+setMethod(f="garch.seg",signature = c("ANY"), definition = function(object=NULL,x, p=1, q=0, f=NULL, sig.level=0.05, 
             Bsim=200, off.diag=TRUE, dw=NULL, do.pp=TRUE,do.parallel=4) {
     formula <- as.formula(paste( paste0("~garch(",p,",",q,")",sep="")))
     burnin <- 100; gam <- 0; mby <- NULL; tby <- NULL;eps <- NULL
@@ -115,7 +115,7 @@ setMethod(f="garch.seg",signature = c("ANY"), definition = function(object=NULL,
   }
 )
 #' @rdname garch.seg-class
-setMethod(f="garch.seg",signature = c("tvMGarch"), definition = function(object, p=1, q=1, f=8, sig.level=0.05, 
+setMethod(f="garch.seg",signature = c("tvMGarch"), definition = function(object, p=1, q=0, f=NULL, sig.level=0.05, 
                                                                     Bsim=200, off.diag=TRUE, dw=NULL, do.pp=TRUE,do.parallel=4) {
   formula <- as.formula(paste( paste0("~garch(",p,",",q,")",sep="")))
   x = object@in_sample_y = object@y[,1:(floor(dim(object@y)[2]*(1-object@out_of_sample_prop)))]

@@ -1,7 +1,7 @@
 #' A method to simulate nonstationary high-dimensional CCC GARCH models.
 #' @name pc_cccsim-class
 #' @param object a simMGarch object
-#' @description A S4 method that takes as an input a \code{simMGarch} object and outputs a simulated a nonstationary CCC model. The formulation of the of the 
+#' @description A S4 method that takes as an input a \code{simMGarch} object and outputs a simulated nonstationary CCC model. The formulation of the of the 
 #' piecewise constant CCC model is given in the \code{simMGarch} class.
 #' @references
 #' Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2018).

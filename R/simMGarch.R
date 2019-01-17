@@ -17,6 +17,7 @@
 #' @slot a0 The vector of the parameters a0 in the individual GARCH processes denoted by \eqn{\omega_i(t)} in the above formula.
 #' @slot a1 The vector of the parameters a1 in the individual GARCH processes denoted by \eqn{\alpha_i(t)} in the above formula.
 #' @slot b1 The vector of the parameters b1 in the individual GARCH processes denoted by \eqn{\beta_i(t)} in the above formula.
+#' @slot BurnIn The size of the burn-in sample. Note that this only applies at the first simulated segment. Default is 50.
 #' @references
 #' Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2017).
 #' @examples
@@ -31,18 +32,19 @@
 #' @export
 setClass("simMGarch", 
          slots = c(
-           y="matrix",
-           cor_errors="matrix",
-           h="matrix",
-           n="numeric", 
-           d="numeric", 
-           r="numeric", 
-           multp="numeric", 
-           changepoints="numeric", 
-           pw="logical",
-           a0="numeric",
+           y = "matrix",
+           cor_errors = "matrix",
+           h = "matrix",
+           n = "numeric", 
+           d = "numeric", 
+           r = "numeric", 
+           multp = "numeric", 
+           changepoints = "numeric", 
+           pw = "logical",
+           a0 = "numeric",
            a1 = "numeric",
-           b1 = "numeric"
+           b1 = "numeric",
+           BurnIn = "numeric"
          ), 
          prototype = list(
            n=2000,

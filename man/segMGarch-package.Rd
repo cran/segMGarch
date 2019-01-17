@@ -26,7 +26,7 @@ are made detectable as change-points in the simpler (mean) structure of the pane
 at the price of the increased dimensionality. The main routine is \code{garch.seg}.
 }
 \author{
-Hearan Cho and  Karolos Korkas
+Haeran Cho and  Karolos Korkas
 
 Maintainer: Karolos Korkas <kkorkas@yahoo.co.uk>
 }

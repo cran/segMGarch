@@ -36,6 +36,8 @@ In this package, we assume a piecewise constant CCC with \eqn{p=q=1}.
 \item{\code{a1}}{The vector of the parameters a1 in the individual GARCH processes denoted by \eqn{\alpha_i(t)} in the above formula.}
 
 \item{\code{b1}}{The vector of the parameters b1 in the individual GARCH processes denoted by \eqn{\beta_i(t)} in the above formula.}
+
+\item{\code{BurnIn}}{The size of the burn-in sample. Note that this only applies at the first simulated segment. Default is 50.}
 }}
 
 \examples{

@@ -16,7 +16,7 @@ pc_cccsim(object)
 \item{object}{a simMGarch object}
 }
 \description{
-A S4 method that takes as an input a \code{simMGarch} object and outputs a simulated a nonstationary CCC model. The formulation of the of the 
+A S4 method that takes as an input a \code{simMGarch} object and outputs a simulated nonstationary CCC model. The formulation of the of the 
 piecewise constant CCC model is given in the \code{simMGarch} class.
 }
 \examples{
