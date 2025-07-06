@@ -11,10 +11,10 @@
 #' @param do.pp Allows further post processing of the estimated change-points to reduce the risk of undersegmentation.
 #' @param Bsim Number of bootstrap samples for threshold selection. Default is 200.
 #' @param sig.level Indicates the quantile of bootstrap test statistics to be used for threshold selection. Default is 0.05.
-#' @param do.parallel Number of copies of R running in parallel, if \code{do.parallel = 0}, \%do\% operator is used, see also \link{foreach}.
+#' @param do.parallel Number of copies of R running in parallel, if \code{do.parallel = 0}, \%do\% operator is used, see also \code{foreach}.
 #' @param object A \code{tvMGarch} object. Not necessary if \code{x} is used.
 #' @references
-#' Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2018).
+#' Cho, H. and Korkas, K.K., 2022. High-dimensional GARCH process segmentation with an application to Value-at-Risk. Econometrics and Statistics, 23, pp.187-203.
 #' @examples
 #' #pw.CCC.obj <- new("simMGarch")
 #' #pw.CCC.obj@d=10
@@ -28,14 +28,14 @@
 #' @export
 #' @aliases garch.seg garch.seg-class garch.seg-methods
 setGeneric(name="garch.seg",
-           def=function(object,x, p=1, q=0, f=NULL, sig.level=0.05, 
+           def=function(object,x, p=1, q=0, f=NULL, sig.level=0.05,
                         Bsim=200, off.diag=TRUE, dw=NULL, do.pp=TRUE,do.parallel=4)
            {
              standardGeneric("garch.seg")
            }
 )
 #' @rdname garch.seg-class
-setMethod(f="garch.seg",signature = c("ANY"), definition = function(object=NULL,x, p=1, q=0, f=NULL, sig.level=0.05, 
+setMethod(f="garch.seg",signature = c("ANY"), definition = function(object=NULL,x, p=1, q=0, f=NULL, sig.level=0.05,
             Bsim=200, off.diag=TRUE, dw=NULL, do.pp=TRUE,do.parallel=4) {
     formula <- as.formula(paste( paste0("~garch(",p,",",q,")",sep="")))
     burnin <- 100; gam <- 0; mby <- NULL; tby <- NULL;eps <- NULL
@@ -44,7 +44,7 @@ setMethod(f="garch.seg",signature = c("ANY"), definition = function(object=NULL,
     if(is.null(eps)) eps <- 1e-2*min(abs(x))
     fi <- func.input(x, formula, p, q, f, eps, off.diag)
     ttx <- fi$ttx; res <- fi$res; c.mat <- fi$c.mat; sgn <- fi$sgn; f <- fi$f
-    #if(boot.op==1 & (is.null(prob) || (prob<=0 | prob>=1))) prob <- min(.5, 1/mean(apply(res, 1, function(z){g <- get.gg(z, M=M); ((g[2]/g[1])^2)^(1/3)*T^(1/5)})))	
+    #if(boot.op==1 & (is.null(prob) || (prob<=0 | prob>=1))) prob <- min(.5, 1/mean(apply(res, 1, function(z){g <- get.gg(z, M=M); ((g[2]/g[1])^2)^(1/3)*T^(1/5)})))
     d <- nrow(ttx); len <- ncol(ttx)
     #if(is.null(gam)) gam <- log(d)
     if(is.null(mby)) mby <- round(log(d))
@@ -68,7 +68,7 @@ setMethod(f="garch.seg",signature = c("ANY"), definition = function(object=NULL,
             break
           }
         }
-      } 
+      }
       k <- k+1
     }
     tree <- list(matrix(0, 6, 1))
@@ -83,7 +83,7 @@ setMethod(f="garch.seg",signature = c("ANY"), definition = function(object=NULL,
           tree[[l]][1, ncc] <- mat[1, k]
           tree[[l]][2, ncc] <- mat[2, k]
           tree[[l]][3, ncc] <- mat[3, k]
-          tree[[l]][4, ncc] <- mat[4, k]					
+          tree[[l]][4, ncc] <- mat[4, k]
           tree[[l]][5, ncc] <- mat[8, k]
           tree[[l]][6, ncc] <- mat[5, k]
         }
@@ -93,7 +93,7 @@ setMethod(f="garch.seg",signature = c("ANY"), definition = function(object=NULL,
     if(length(est.cps) > 1){
       sc <- sort(est.cps, decreasing=FALSE, index.return=TRUE)
       est.cps <- sc$x; pos.seq <- pos.seq[sc$ix]
-    } 
+    }
     if(do.pp && length(est.cps)>1){
       brks <- c(0, est.cps, len)
       pp.mat <- c()
@@ -108,14 +108,14 @@ setMethod(f="garch.seg",signature = c("ANY"), definition = function(object=NULL,
       pp.pos.seq <- c()
       for(b in 1:length(est.cps)) pp.pos.seq <- c(pp.pos.seq, mean(pp.mat[5, b] > pp.ns[b, ]))
       pp.est.cps <- pp.mat[3, apply(cbind(pos.seq, pp.pos.seq), 1, max) >= 1-sig.level]
-      
+
     } else pp.est.cps <- est.cps
-    ls <- list(fi=fi, op=2, tree=tree, est.cps=est.cps, pp.est.cps=pp.est.cps)	
+    ls <- list(fi=fi, op=2, tree=tree, est.cps=est.cps, pp.est.cps=pp.est.cps)
     return(ls)
   }
 )
 #' @rdname garch.seg-class
-setMethod(f="garch.seg",signature = c("tvMGarch"), definition = function(object, p=1, q=0, f=NULL, sig.level=0.05, 
+setMethod(f="garch.seg",signature = c("tvMGarch"), definition = function(object, p=1, q=0, f=NULL, sig.level=0.05,
                                                                     Bsim=200, off.diag=TRUE, dw=NULL, do.pp=TRUE,do.parallel=4) {
   formula <- as.formula(paste( paste0("~garch(",p,",",q,")",sep="")))
   x = object@in_sample_y = object@y[,1:(floor(dim(object@y)[2]*(1-object@out_of_sample_prop)))]
@@ -126,7 +126,7 @@ setMethod(f="garch.seg",signature = c("tvMGarch"), definition = function(object,
   if(is.null(eps)) eps <- 1e-2*min(abs(x))
   fi <- func.input(x, formula, p, q, f, eps, off.diag)
   ttx <- fi$ttx; res <- fi$res; c.mat <- fi$c.mat; sgn <- fi$sgn; f <- fi$f
-  #if(boot.op==1 & (is.null(prob) || (prob<=0 | prob>=1))) prob <- min(.5, 1/mean(apply(res, 1, function(z){g <- get.gg(z, M=M); ((g[2]/g[1])^2)^(1/3)*T^(1/5)})))	
+  #if(boot.op==1 & (is.null(prob) || (prob<=0 | prob>=1))) prob <- min(.5, 1/mean(apply(res, 1, function(z){g <- get.gg(z, M=M); ((g[2]/g[1])^2)^(1/3)*T^(1/5)})))
   d <- nrow(ttx); len <- ncol(ttx)
   #if(is.null(gam)) gam <- log(d)
   if(is.null(mby)) mby <- round(log(d))
@@ -150,7 +150,7 @@ setMethod(f="garch.seg",signature = c("tvMGarch"), definition = function(object,
           break
         }
       }
-    } 
+    }
     k <- k+1
   }
   tree <- list(matrix(0, 6, 1))
@@ -165,7 +165,7 @@ setMethod(f="garch.seg",signature = c("tvMGarch"), definition = function(object,
         tree[[l]][1, ncc] <- mat[1, k]
         tree[[l]][2, ncc] <- mat[2, k]
         tree[[l]][3, ncc] <- mat[3, k]
-        tree[[l]][4, ncc] <- mat[4, k]					
+        tree[[l]][4, ncc] <- mat[4, k]
         tree[[l]][5, ncc] <- mat[8, k]
         tree[[l]][6, ncc] <- mat[5, k]
       }
@@ -175,7 +175,7 @@ setMethod(f="garch.seg",signature = c("tvMGarch"), definition = function(object,
   if(length(est.cps) > 1){
     sc <- sort(est.cps, decreasing=FALSE, index.return=TRUE)
     est.cps <- sc$x; pos.seq <- pos.seq[sc$ix]
-  } 
+  }
   if(do.pp && length(est.cps)>1){
     brks <- c(0, est.cps, len)
     pp.mat <- c()
@@ -190,9 +190,9 @@ setMethod(f="garch.seg",signature = c("tvMGarch"), definition = function(object,
     pp.pos.seq <- c()
     for(b in 1:length(est.cps)) pp.pos.seq <- c(pp.pos.seq, mean(pp.mat[5, b] > pp.ns[b, ]))
     pp.est.cps <- pp.mat[3, apply(cbind(pos.seq, pp.pos.seq), 1, max) >= 1-sig.level]
-    
+
   } else pp.est.cps <- est.cps
-  ls <- list(fi=fi, op=2, tree=tree, est.cps=est.cps, pp.est.cps=pp.est.cps)	
+  ls <- list(fi=fi, op=2, tree=tree, est.cps=est.cps, pp.est.cps=pp.est.cps)
   object@changepoints = pp.est.cps
   return(object)
 }

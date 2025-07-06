@@ -1,10 +1,10 @@
 #' A method to simulate nonstationary high-dimensional CCC GARCH models.
 #' @name pc_cccsim-class
 #' @param object a simMGarch object
-#' @description A S4 method that takes as an input a \code{simMGarch} object and outputs a simulated nonstationary CCC model. The formulation of the of the 
+#' @description A S4 method that takes as an input a \code{simMGarch} object and outputs a simulated nonstationary CCC model. The formulation of the of the
 #' piecewise constant CCC model is given in the \code{simMGarch} class.
 #' @references
-#' Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2018).
+#' Cho, H. and Korkas, K.K., 2022. High-dimensional GARCH process segmentation with an application to Value-at-Risk. Econometrics and Statistics, 23, pp.187-203.
 #' @examples
 #' pw.CCC.obj <- new("simMGarch")
 #' pw.CCC.obj <- pc_cccsim(pw.CCC.obj)
@@ -13,7 +13,7 @@
 #' ts.plot(pw.CCC.obj@h[1,],main="a single simulated conditional variance",ylab="variance")
 #' @import Rcpp foreach doParallel parallel iterators
 #' @importFrom stats rnorm acf rgeom
-#' @importFrom utils head tail 
+#' @importFrom utils head tail
 #' @useDynLib segMGarch, .registration = TRUE
 #' @export
 #' @docType methods
@@ -38,7 +38,7 @@ setMethod(f="pc_cccsim", signature= "simMGarch", definition = function(object) {
       B1[,i]=gen_pc_coef(object,object@b1)
     }
     Y[1,] = rnorm(object@d)
-    H[1,] = sqrt(A0[1,]+A1[1,]*rnorm(object@d)^2)  
+    H[1,] = sqrt(A0[1,]+A1[1,]*rnorm(object@d)^2)
     for (i in 2:object@n) {
       H[i,]=sqrt(A0[i,]  +A1[i,]*(Y[i-1,]^2) + B1[i,]*H[i-1,]^2)
       Y[i,]=H[i,]*e.mat[i,]

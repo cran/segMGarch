@@ -6,7 +6,7 @@
 #' @slot out_of_sample_y The out of sample y matrix reserved for forecasting and backtesting exercises.
 #' @slot in_sample_y The in-sample y matrix reserved for estimation (calibration) and change-point detection.
 #' @references
-#' Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2018).
+#' Cho, H. and Korkas, K.K., 2022. High-dimensional GARCH process segmentation with an application to Value-at-Risk. Econometrics and Statistics, 23, pp.187-203.
 #' @examples
 #' simObj <- new("simMGarch")
 #' simObj@d <- 10
@@ -21,12 +21,12 @@
 #' @importFrom  corpcor cor.shrink
 #' @useDynLib segMGarch, .registration = TRUE
 #' @export
-setClass("tvMGarch", 
+setClass("tvMGarch",
          slots = c(
            out_of_sample_prop = "numeric",
            out_of_sample_y = "matrix",
            in_sample_y = "matrix"
-         ), 
+         ),
          prototype = list(
            out_of_sample_prop = .1
          ),

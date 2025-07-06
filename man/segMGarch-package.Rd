@@ -14,12 +14,12 @@ It also provides additional functions and methods that relate to risk management
 \details{
 We develop a segmentation algorithm for
 multiple change-point detection in high-dimensional GARCH processes.
-It simultaneously segments GARCH processes 
+It simultaneously segments GARCH processes
 by identifying 'common' change-points,
 each of which can be shared by a subset or all of the component time series
 as a change-point in their within-series and/or cross-sectional correlation structure.
 The methodology first transforms the \eqn{d}-dimensional time series
-into \eqn{d(d+1)/2}-dimensional panel data consisting of 
+into \eqn{d(d+1)/2}-dimensional panel data consisting of
 empirical residual series and their cross-products,
 whereby change-points in the complex ((un)conditional variance and covariance) structure
 are made detectable as change-points in the simpler (mean) structure of the panel data
@@ -34,10 +34,14 @@ Maintainer: Karolos Korkas <kkorkas@yahoo.co.uk>
 Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2018).
 
 Cho, Haeran. "Change-point detection in panel data via double CUSUM statistic." Electronic Journal of Statistics 10, no. 2 (2016): 2000-2038.
- 
+
 }
-\keyword{ multiple change-point detection, multivariate GARCH, stress period selection, 
-Double CUSUM Binary Segmentation, high dimensionality, nonstationarity }
+\keyword{ multiple change-point detection}
+\keyword{multivariate GARCH}
+\keyword{stress period selection}
+\keyword{Double CUSUM Binary Segmentation}
+\keyword{high dimensionality}
+\keyword{nonstationarity}
 \examples{
   \dontrun{
 #pw.CCC.obj <- new("simMGarch")
@@ -51,7 +55,7 @@ Double CUSUM Binary Segmentation, high dimensionality, nonstationarity }
 #ts.plot(t(pw.CCC.obj@y),col="grey");grid()
 #abline(v=dcs.obj$est.cps,col="red" )
 #abline(v=pw.CCC.obj@changepoints,col="blue" )
-#legend("bottom", legend=c("Estimated change-points", "Real change-points"), 
+#legend("bottom", legend=c("Estimated change-points", "Real change-points"),
 #col=c("red", "blue"), lty=1:2, cex=0.8)
   }
 }

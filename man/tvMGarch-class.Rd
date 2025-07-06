@@ -29,5 +29,5 @@ empirObj@out_of_sample_prop <- 0.1
 #empirObj=garch.seg(object=empirObj,do.parallel = 4)##Not run
 }
 \references{
-Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2018).
+Cho, H. and Korkas, K.K., 2022. High-dimensional GARCH process segmentation with an application to Value-at-Risk. Econometrics and Statistics, 23, pp.187-203.
 }

@@ -10,8 +10,7 @@
 \usage{
 DQtest(y, VaR, VaR_level, lag = 1, lag_hit = 1, lag_var = 1)
 
-\S4method{DQtest}{ANY}(y, VaR, VaR_level, lag = 1, lag_hit = 1,
-  lag_var = 1)
+\S4method{DQtest}{ANY}(y, VaR, VaR_level, lag = 1, lag_hit = 1, lag_var = 1)
 }
 \arguments{
 \item{y}{The time series to apply a VaR model (a single asset rerurn or portfolio return).}

@@ -5,7 +5,7 @@
 #' @description An auxilliary method to calculate piecewise constant coefficients for a user-specified vector of coefficients. The change-points are controlled
 #' by the \code{changepoints} slot in the \code{simMGarch} object.
 #' @references
-#' Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2018).
+#' Cho, H. and Korkas, K.K., 2022. High-dimensional GARCH process segmentation with an application to Value-at-Risk. Econometrics and Statistics, 23, pp.187-203.
 #' @examples
 #' pw.CCC.obj <- new("simMGarch")
 #' coef.vector <- gen_pc_coef(pw.CCC.obj,c(0.2,0.4))
@@ -28,7 +28,7 @@ setMethod(f="gen_pc_coef", signature= "simMGarch", definition = function(object,
     if (length(coef)==1) coef=rep(coef,num.coeff)
     Coef.vec = c()
     for (i in 1:num.coeff) {
-      if (i == 1){      
+      if (i == 1){
         Coef.vec=c(Coef.vec,rep(coef[1],object@changepoints[1]))
         next
       }

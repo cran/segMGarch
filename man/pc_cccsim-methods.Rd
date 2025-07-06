@@ -16,7 +16,7 @@ pc_cccsim(object)
 \item{object}{a simMGarch object}
 }
 \description{
-A S4 method that takes as an input a \code{simMGarch} object and outputs a simulated nonstationary CCC model. The formulation of the of the 
+A S4 method that takes as an input a \code{simMGarch} object and outputs a simulated nonstationary CCC model. The formulation of the of the
 piecewise constant CCC model is given in the \code{simMGarch} class.
 }
 \examples{
@@ -27,5 +27,5 @@ ts.plot(pw.CCC.obj@y[1,],main="a single simulated time series",ylab="series")
 ts.plot(pw.CCC.obj@h[1,],main="a single simulated conditional variance",ylab="variance")
 }
 \references{
-Cho, Haeran, and Karolos Korkas. "High-dimensional GARCH process segmentation with an application to Value-at-Risk." arXiv preprint arXiv:1706.01155 (2018).
+Cho, H. and Korkas, K.K., 2022. High-dimensional GARCH process segmentation with an application to Value-at-Risk. Econometrics and Statistics, 23, pp.187-203.
 }
